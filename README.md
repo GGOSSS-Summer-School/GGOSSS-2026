@@ -56,7 +56,6 @@ GGOSSS-2026/
 ├── 06-coastal-monitoring/     Shoreline change, coastal processes, machine learning
 ├── 07-field-campaign/         Lake Nokoué campaign — processing the data collected
 ├── 08-group-projects/         Trainee group work
-├── data/                      Small sample datasets only (see note below)
 ├── environment.yml
 └── requirements.txt
 ```
