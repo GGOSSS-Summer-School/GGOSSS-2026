@@ -1,0 +1,37 @@
+# GGOSSS 2026 — Python requirements
+# Alternative to environment.yml for users who prefer pip/venv.
+#
+#   python -m venv .venv
+#   source .venv/bin/activate      # Windows: .venv\Scripts\activate
+#   pip install -r requirements.txt
+#
+# Note: cartopy needs system libraries (GEOS, PROJ). If it fails to build,
+# use the conda environment instead — see environment.yml.
+
+# --- core -----------------------------------------------------------
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+
+# --- ocean / gridded data -------------------------------------------
+xarray>=2024.1
+netCDF4>=1.6
+dask>=2024.1
+gsw>=3.6                  # TEOS-10 seawater toolbox
+
+# --- plotting -------------------------------------------------------
+matplotlib>=3.8
+cartopy>=0.22
+cmocean>=3.1
+
+# --- machine learning -----------------------------------------------
+scikit-learn>=1.4
+
+# --- Copernicus Marine ----------------------------------------------
+copernicusmarine>=1.3
+
+# --- notebooks ------------------------------------------------------
+jupyterlab>=4.1
+ipywidgets>=8.1
+
+# --- add session-specific packages below ----------------------------
