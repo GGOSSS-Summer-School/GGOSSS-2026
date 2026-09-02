@@ -1,0 +1,45 @@
+# --- Data: keep the repository light -------------------------------
+*.nc
+*.nc4
+*.hdf
+*.hdf5
+*.h5
+*.grib
+*.grb
+*.zarr/
+*.tif
+*.tiff
+*.mat
+*.zip
+*.tar.gz
+data/**
+!data/.gitkeep
+!data/README.md
+!data/*sample*
+
+# --- Notebooks ------------------------------------------------------
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# --- Python ---------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.python-version
+*.egg-info/
+
+# --- Credentials — never commit -------------------------------------
+.env
+.copernicusmarine/
+*credentials*
+*.key
+*.pem
+
+# --- OS / editor ----------------------------------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
