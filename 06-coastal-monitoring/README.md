@@ -34,7 +34,11 @@ Ordre recommandé:
 1. `notebooks/GGOSSS2026_Coastal_Dynamics_PAK_Practical.ipynb`
 2. `notebooks/GGOSSS2026_ML_Coastal_Vulnerability_BD_Practical.ipynb`
 3. `notebooks/GGOSSS2026_Cartographie_Resultats_Spatiaux.ipynb`
-4. Scripts optionnels de vérification:
+4. Module optionnel CoastSat:
+   - `notebooks/GGOSSS2026_CoastSat_Optional_Setup_Download_Extraction.ipynb`
+   - `notebooks/smoke_test_coastsat_environment.py`
+   - `notebooks/prepare_fes2022_regional_subset.py`
+5. Scripts optionnels de vérification:
    - `notebooks/smoke_test_pak_coastal_dynamics.py`
    - `notebooks/smoke_test_bd_vulnerability_ml.py`
 
@@ -62,6 +66,15 @@ spatial_validation_reduced_predictors
 La sortie PAK attendue contient le nombre de transects en érosion/stabilité/accrétion et le secteur prioritaire selon trois scénarios de pondération.
 
 Pour la session orale d'une heure, ces notebooks ne sont pas obligatoires à exécuter en entier. Ils peuvent être utilisés comme démonstrations courtes, support de discussion, ou base de travail pour les activités de groupe après la session.
+
+Le module CoastSat est séparé de l'environnement `ggosss2026`. Il doit être lancé dans un environnement `coastsat` déjà configuré avec CoastSat, Earth Engine et PyFES:
+
+```bash
+conda activate coastsat
+python notebooks/smoke_test_coastsat_environment.py
+```
+
+Le notebook CoastSat désactive les téléchargements par défaut. Les interrupteurs `RUN_CHECK_AVAILABLE`, `RUN_DOWNLOAD` et `RUN_EXTRACTION` doivent être passés explicitement à `True` par l'instructeur pour éviter de créer des fichiers lourds pendant la session.
 
 ## Données
 
@@ -94,6 +107,12 @@ jupyter lab
 ```
 
 La session orale ne nécessite pas de logiciel en direct. Les notebooks de démonstration utilisent les packages déjà listés dans l'environnement du dépôt: `numpy`, `pandas`, `matplotlib`, `scikit-learn`, `cartopy`, `pyproj` et `jupyterlab`.
+
+Le module optionnel CoastSat nécessite un environnement séparé `coastsat`. Les données FES2022 ne doivent pas être committées dans le dépôt; si elles sont disponibles localement, le script `notebooks/prepare_fes2022_regional_subset.py` permet de préparer un sous-ensemble Bénin/lac Nokoué, PAK/Kribi ou golfe de Guinée. Ce sous-ensemble requiert `xarray` et `netcdf4` dans l'environnement CoastSat:
+
+```bash
+conda install -n coastsat -c conda-forge xarray netcdf4
+```
 
 ## Lancer les notebooks
 
