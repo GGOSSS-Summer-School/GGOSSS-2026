@@ -18,5 +18,3 @@ dependencies:
   - scikit-learn
   - copernicusmarine
   - pip
-  - pip:
-      - # add session-specific packages here
