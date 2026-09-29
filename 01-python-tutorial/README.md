@@ -1,7 +1,7 @@
 # Python for ocean data analysis
 
 **Day 1 · GGOSSS 2026**
-Instructors: Fernand Assene, Hugo Plombat, Rodrigue Imbol Koungue, Babette Tchonang
+Instructors: Hugo Plombat, Fernand Assene, Rodrigue Imbol Koungue, Babette Tchonang
 
 ## What this session covers
 
