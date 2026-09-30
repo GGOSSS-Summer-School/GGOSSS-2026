@@ -81,25 +81,6 @@ notebooks in the order they are used, and any data the notebooks expect.
 
 ---
 
-## Programme
-
-| Day | Session | Folder | Instructors |
-|---|---|---|---|
-| 1 | Python for ocean data analysis | [`01-python-tutorial`](01-python-tutorial) | Hugo Plombat, Fernand Assene, Rodrigue Imbol Koungue, Babette Tchonang |
-| 2 | In-situ data acquisition | [`02-in-situ`](02-in-situ) | Rodrigue Imbol Koungue, Alina Nathanaël Dossa, Wilfried Panassa |
-| 2 | Satellite oceanography | [`03-satellite`](03-satellite) | Babette Tchonang |
-| 2 | Copernicus Marine Service | [`04-cmems`](04-cmems) | Tony Jolibois, Babette Tchonang |
-| 2 | Coastal monitoring and machine learning *(in French)* | [`06-coastal-monitoring`](06-coastal-monitoring) | Frédéric Bonou, Nourdi Njutapvoui |
-| 3 | Lake Nokoué field campaign | [`07-field-campaign`](07-field-campaign) | Victor Okpeitcha |
-| — | Numerical modelling with CROCO and OpenDrift | [`05-modelling`](05-modelling) | |
-| 4–7 | Group projects | [`08-group-projects`](08-group-projects) | All instructors |
-
-Some sessions need extra set-up beyond the shared environment — for example,
-the optional CoastSat module in `06-coastal-monitoring` runs in its own `coastsat`
-environment. Check the session README before the school.
-
----
-
 ## A note on data
 
 Keep this repository light. **Do not commit large files.**
