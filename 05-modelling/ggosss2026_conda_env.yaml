@@ -1,0 +1,57 @@
+name: ggosss26
+channels:
+ - conda-forge
+dependencies:
+ - python=3.11 # from prepro
+ - cartopy # from prepro, xcroco
+ - cdsapi # from prepro
+ - cf-xarray  # from xcroco
+ - cftime # from prepro
+ - cfgrib
+ - configparser # from prepro
+ - dask # from prepro, xcroco
+ - gcc # from prepro
+ - gdal # from prepro
+ - geopandas # from prepro, xcroco
+ - compilers # from prepro
+ - intake   # from xcroco
+ - intake-xarray   # from xcroco
+ - ipykernel # from prepro
+ - ipympl # from prepro
+ - ipython # from prepro
+ - ipywidgets # from prepro, xcroco
+ - jupyter # from prepro
+ - jupyterlab # from prepro, xcroco
+ - matplotlib # from prepro, croco_pyvisu
+ - netcdf-fortran # from prepro
+ - h5py # from prepro
+ - h5netcdf # from prepro
+ - netcdf4 # from prepro, xcroco, croco_pyvisu
+ - nodejs # from xcroco
+ - numba # from xcroco
+ - numpy # from prepro
+ - pandas # from prepro
+ - pip # from prepro
+ - pyamg # from xcroco
+ - pyinterp>=2026.2.0 # from prepro
+ - pyproj # from prepro
+ - python-dateutil # from prepro
+ - scipy # from prepro, croco_pyvisu
+ - shapely # from prepro
+ - xarray # from prepro, xcroco, croco_pyvisu
+ - xgcm  # from xcroco
+ - xrft  # from xcroco
+ - zarr>=3  # from xcroco; also the ERA5 ARCO store (era5_arco.py)
+ - fsspec
+ - aiohttp>=3.9  # HTTP access to the ERA5 ARCO store (an old 0.x aiohttp breaks it)
+ - cmocean  # colormaps (OpenDrift exercises)
+ - gsw  # TEOS-10 seawater equations
+ - scikit-learn
+ - copernicusmarine # from prepro (CMEMS downloads)
+ - wxpython # from croco_pyvisu
+ - ffmpeg  # from croco_pyvisu
+ - setuptools<81.0 # from prepro
+ - pip:
+   - regionmask
+   - pydap # from prepro
+   - opendrift
