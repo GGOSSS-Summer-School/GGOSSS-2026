@@ -56,14 +56,25 @@ if [ -n "${PARENT}" ]; then
             [ -f "$d/$ph/CROCO_FILES/croco_avg.nc" ] && FILES+=("$d/$ph/CROCO_FILES/croco_avg.nc")
         done
     done
-    say "nesting in ${PARENT} (${P_BUILD}): converting ${#FILES[@]} daily-mean file(s) to GLORYS format"
-    printf '    %s\n' "${FILES[@]}"
-    rm -f "${GLORYS_DIR}"/20*.nc
-    python -c "
+    # the converted files depend only on the parent's outputs (not on the child grid): keep them
+    # when they are newer than every parent file (e.g. after moving a child edge), else redo them
+    FRESH=1; ls "${GLORYS_DIR}"/20*.nc >/dev/null 2>&1 || FRESH=0
+    for f in "${FILES[@]}"; do
+        for c in "${GLORYS_DIR}"/20*.nc; do [ "$f" -nt "$c" ] && FRESH=0; done
+    done
+    if [ "${FRESH}" = 1 ] && [ -z "${NEST_RECONVERT:-}" ]; then
+        say "nesting in ${PARENT}: converted parent files up to date -- kept (NEST_RECONVERT=1 to redo):"
+        ls -l "${GLORYS_DIR}"/20*.nc
+    else
+        say "nesting in ${PARENT} (${P_BUILD}): converting ${#FILES[@]} daily-mean file(s) to GLORYS format"
+        printf '    %s\n' "${FILES[@]}"
+        rm -f "${GLORYS_DIR}"/20*.nc
+        python -c "
 import sys; sys.path.insert(0, '.')
 import nesting
 nesting.parent_to_monthly(sys.argv[2:], sys.argv[1], Yorig=${YORIG})
 " "${GLORYS_DIR}" "${FILES[@]}"
+    fi
     say "ERA5: the parent's files in ${ERA5_DIR}/for_croco"
     for ym in $(seq 0 12); do
         m=$(date -u -d "${ERA5_MONTH_START}-01 + ${ym} months" +%Y-%m)

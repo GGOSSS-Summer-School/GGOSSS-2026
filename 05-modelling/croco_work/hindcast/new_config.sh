@@ -80,9 +80,13 @@ awk -v a="${LON_MIN}" -v b="${LON_MAX}" -v c="${LAT_MIN}" -v d="${LAT_MAX}" \
 date -u -d "${START}" >/dev/null && date -u -d "${END}" >/dev/null
 if [ -n "${PARENT}" ]; then
     IFS=, read A B C D <<< "${PLON}"
+    # inside the parent by at least 0.3 deg on EVERY side (land edges too): the ini/bry reader
+    # asks the parent data to cover the child grid + a 0.2 deg buffer
     awk -v a="${LON_MIN}" -v b="${LON_MAX}" -v c="${LAT_MIN}" -v d="${LAT_MAX}" -v A="$A" -v B="$B" -v C="$C" -v D="$D" \
-        'BEGIN{exit !(a>=A && b<=B && c>=C && d<=D)}' \
-        || { echo "!! the child box must lie inside the parent ${PARENT} box (lon $A..$B, lat $C..$D)"; exit 1; }
+        'BEGIN{m=0.3; exit !(a>=A+m && b<=B-m && c>=C+m && d<=D-m)}' \
+        || { echo "!! the child box must lie inside the parent ${PARENT} box (lon $A..$B, lat $C..$D) by at least"
+             echo "   0.3 deg on every side, land edges included: lon $(awk -v x=$A 'BEGIN{print x+0.3}')..$(awk -v x=$B 'BEGIN{print x-0.3}'), lat $(awk -v x=$C 'BEGIN{print x+0.3}')..$(awk -v x=$D 'BEGIN{print x-0.3}')"
+             echo "   (the ini/bry reader needs the child grid + 0.2 deg covered by the parent's data)"; exit 1; }
     SPINUP=1
     # sponge ~7 child cells wide (e.g. 1/36 deg -> ~20 km): damps the sharper parent
     # structures arriving at the open edges so they do not reflect inward

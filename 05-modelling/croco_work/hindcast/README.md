@@ -21,7 +21,7 @@ source ~/croco_work/env.sh                     # (the scripts also do this thems
         --hcast-days 16 --tides --rivers --threads 8                              # 1/12 deg, one 16-day run
 ~/croco_work/hindcast/new_config.sh Canary_12 -22 -15.5 14 24 --start 2025-12-02 --end 2026-01-09
 # a finer CHILD nested in GoG_12 (period, physics, threads from the parent; see section 7)
-~/croco_work/hindcast/new_config.sh IGOG_36 4 12.5 -5.5 5.5 --res 36 --parent GoG_12
+~/croco_work/hindcast/new_config.sh IGOG_36 4 12.2 -5.5 5.5 --res 36 --parent GoG_12
 
 # 2. build + prove it (grid, boundaries, data, ini/bry, source files, compile, 7-day test run)
 ~/croco_work/hindcast/build_config.sh GoG_12
@@ -244,7 +244,7 @@ running, unlike AGRIF).
 # 1. the parent, as usual (its period must cover the child's + 1 day)
 ~/croco_work/hindcast/build_config.sh GoG_12 && ~/croco_work/hindcast/run_hindcast_cycle.sh GoG_12
 # 2. the child: one command describes it ...
-~/croco_work/hindcast/new_config.sh IGOG_36 4 12.5 -5.5 5.5 --res 36 --parent GoG_12
+~/croco_work/hindcast/new_config.sh IGOG_36 4 12.2 -5.5 5.5 --res 36 --parent GoG_12
 # 3. ... the grid (step 01), then the usual steps; step 03 CONVERTS the parent instead of downloading
 ~/croco_work/hindcast/build_config.sh IGOG_36 --no-test
 ~/croco_work/hindcast/run_hindcast_cycle.sh IGOG_36
@@ -255,7 +255,7 @@ running, unlike AGRIF).
 | setting | value | reason |
 |---|---|---|
 | `PARENT` | `GoG_12` | switches the ocean source to the parent (`OCEAN_SOURCE` is then ignored) |
-| box | checked to lie inside the parent's | the parent must cover every child point |
+| box | checked to lie inside the parent's by **≥ 0.3° on every side, land edges included** | the ini/bry reader (`ibc_class.py`) wants the source data to cover the child grid **+ 0.2°**; a shared edge fails at step 04 with *The data does not cover the entire grid* |
 | `HC_START`, `HC_END` | the parent's start; the parent's end − 1 day | the parent's daily means are stamped at 12:00, so its last one (end − 12 h) must come after the child's last step |
 | `HCAST_DAYS` | the parent's, capped at the child's period | one cycle per parent cycle |
 | `SPINUP_DAYS` | 1 | the interpolated parent state has no fine structure; the child grows its own in about a day |
@@ -282,8 +282,9 @@ conversion; child `DT` ≈ parent `DT` × (child cell / parent cell); child peri
 at least one day earlier. Keep the child a few parent cells away from the parent's **open** edges when you can:
 there the parent's solution is mostly its own boundary data. That is why IGOG_36 stops at 5.5°S: its southern
 edge lies 6 parent cells (~55 km) inside GoG_12's open southern boundary (6°S), so the child's boundary values
-come from GoG_12's own solution, not from the GLORYS data GoG_12 receives at its edge. Its eastern edge
-(12.5°E) coincides with the parent's, but both are land there (closed).
+come from GoG_12's own solution, not from the GLORYS data GoG_12 receives at its edge. Its eastern edge is
+12.2°E, not the parent's 12.5°E, although it is land: the reader needs the parent's data to reach 0.2° beyond the
+child's last point on every side, open or closed.
 
 ---
 
@@ -316,4 +317,5 @@ come from GoG_12's own solution, not from the GLORYS data GoG_12 receives at its
 | `no <PARENT> run … covers …` / `parent run not finished` | run (or finish) the parent's hindcast over the child's period first |
 | `the child box must lie inside the parent` | shrink the child box (or enlarge the parent) |
 | child: `ERROR in get_bry … 'bry_time'` at the end | the child ends too late: at most the parent's end − 1 day |
+| child step 04: `ERROR: The data does not cover the entire grid. Change your grid definition` | a child edge is within 0.2° (+ a cell) of the parent's edge. Move it ≥ 0.3° inside (the scripts now refuse such a box and name the value), then `build_config.sh CHILD --only 1`, `--only 2`, `--from 4`. The converted parent files are kept: step 03 need not run again |
 | ERA5 `TimeoutError` / connection reset | temporary network trouble: retried 5 times; re-run to resume (finished variables are cached in `ERA5/raw/`) |

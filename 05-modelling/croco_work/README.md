@@ -28,3 +28,4 @@ nohup ~/croco_work/hindcast/run_hindcast_cycle.sh MyRegion > ~/MyRegion.log 2>&1
 ~/croco_work/hindcast/new_config.sh MyChild 6 10 -4 2 --res 36 --parent MyRegion
 ~/croco_work/hindcast/build_config.sh MyChild --no-test && ~/croco_work/hindcast/run_hindcast_cycle.sh MyChild
 ```
+

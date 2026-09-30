@@ -60,7 +60,7 @@ nf-config --flibs         # -> -L.../opt_seq/lib -lnetcdff -lnetcdf ...
 
 ```bash
 cd ${CROCO_ROOT}
-conda env create -f environment.yml    # creates the 'ggosss26' env (once)
+conda env create -f ggosss2026_conda_env.yaml    # creates the 'ggosss26' env (once)
 conda activate ggosss26
 pip install --no-deps -e .             # optional: adds the 'ggosss26' command
 ```
@@ -100,7 +100,7 @@ Once extracted, you can delete `DATASETS_CROCOTOOLS.tar.gz`.
 ## Troubleshooting
 
 - **`conda env create` fails with a YAML error** — the first line of
-  `environment.yml` must be `name: ggosss26` (with a space after the colon).
+  `ggosss2026_conda_env.yaml` must be `name: ggosss26` (with a space after the colon).
 - **`nf-config` shows a conda or `/usr` path, not `opt_seq`** — `conda deactivate`,
   re-`source env.sh`; it must put `opt_seq/bin` first on `PATH`.
 - **A build step fails** — run them in order (each needs the previous); ensure

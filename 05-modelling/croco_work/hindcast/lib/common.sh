@@ -122,6 +122,17 @@ if [ -n "${PARENT}" ]; then
         -v A="${P_LON_MIN}" -v B="${P_LON_MAX}" -v C="${P_LAT_MIN}" -v D="${P_LAT_MAX}" \
         'BEGIN{exit !(a>=A && b<=B && c>=C && d<=D)}' \
         || die "child box ${LON_MIN}..${LON_MAX} / ${LAT_MIN}..${LAT_MAX} is not inside the parent ${PARENT} box ${P_LON_MIN}..${P_LON_MAX} / ${P_LAT_MIN}..${P_LAT_MAX}"
+    # ... and at least NEST_MARGIN deg inside on EVERY side (land edges too): the ini/bry reader
+    # (ibc_class.py) asks the source data to cover the child grid + a 0.2 deg buffer, else
+    # "ERROR: The data does not cover the entire grid" at step 04
+    NEST_MARGIN=${NEST_MARGIN:-0.3}
+    _bad=$(awk -v a="${LON_MIN}" -v b="${LON_MAX}" -v c="${LAT_MIN}" -v d="${LAT_MAX}" \
+        -v A="${P_LON_MIN}" -v B="${P_LON_MAX}" -v C="${P_LAT_MIN}" -v D="${P_LAT_MAX}" -v m="${NEST_MARGIN}" 'BEGIN{
+        if (a-A<m) printf " LON_MIN<=%g", A+m; if (B-b<m) printf " LON_MAX<=%g", B-m
+        if (c-C<m) printf " LAT_MIN>=%g", C+m; if (D-d<m) printf " LAT_MAX<=%g", D-m }' | sed 's/LON_MIN<=/LON_MIN>=/')
+    [ -z "${_bad}" ] || die "child box too close to the parent ${PARENT} edge (need ${NEST_MARGIN} deg on every side, land edges too:
+   the ini/bry reader wants the child grid + 0.2 deg covered by the parent data). Set in ${CFG_FILE}:${_bad}
+   then rebuild the child grid: build_config.sh ${CONFIG_NAME} --only 1, --only 2, then --from 4"
     export PARENT PARENT_RUN P_LON_MIN P_LON_MAX P_LAT_MIN P_LAT_MAX
     export PARENT_OUTPUT_ROOT="${CROCO_ROOT}/hindcast/model-runs/${PARENT}"
     OCEAN_SOURCE=parent
