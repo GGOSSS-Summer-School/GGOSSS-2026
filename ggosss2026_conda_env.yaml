@@ -1,4 +1,4 @@
-name: ggosss26
+name: ggosss2026
 channels:
  - conda-forge
 dependencies:
@@ -45,6 +45,7 @@ dependencies:
  - fsspec
  - aiohttp>=3.9  # HTTP access to the ERA5 ARCO store (an old 0.x aiohttp breaks it)
  - cmocean  # colormaps (OpenDrift exercises)
+ - cmcrameri  # Crameri perceptually uniform colormaps
  - gsw  # TEOS-10 seawater equations
  - scikit-learn
  - copernicusmarine # from prepro (CMEMS downloads)

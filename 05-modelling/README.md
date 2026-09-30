@@ -13,13 +13,13 @@ Each region is one small settings file; everything else is derived and written b
 
 | where | what |
 |---|---|
-| `install/` + `install/README.md` | one-time setup: NetCDF/HDF5 stack (`opt_seq/`), CROCO v2.1.3 + croco_pytools v2.0.4 (`code/`), conda env `ggosss26`, DATASETS_CROCOTOOLS (`data/`), accounts |
+| `install/` + `install/README.md` | one-time setup: NetCDF/HDF5 stack (`opt_seq/`), CROCO v2.1.3 + croco_pytools v2.0.4 (`code/`), conda env `ggosss2026`, DATASETS_CROCOTOOLS (`data/`), accounts |
 | `env.sh` | shared paths + compilers (sourced by every script) |
 | `gtools/` | the Python tools; `gtools/ggosss26.py` is the command-line interface |
 | **`hindcast/`** + **`hindcast/README.md`** | **the hindcast system**: `new_config.sh`, `build_config.sh`, `run_hindcast_cycle.sh`, `steps/`, `configs/<NAME>/domain.cfg` |
 | `notebooks/GoG12_hindcast_user_guide.ipynb` | step-by-step guide from a bare machine to a finished hindcast, with expected outputs |
 | `notebooks/verify_config.py` | checks the cycles of a finished hindcast |
-| OpenDrift (in the `ggosss26` env) | Lagrangian drift driven by the hindcast outputs, see [Lagrangian modelling with OpenDrift](#lagrangian-modelling-with-opendrift) |
+| OpenDrift (in the `ggosss2026` env) | Lagrangian drift driven by the hindcast outputs, see [Lagrangian modelling with OpenDrift](#lagrangian-modelling-with-opendrift) |
 | `CHANGES.md` | everything corrected or added relative to the original system, and the verification record |
 
 ```bash
@@ -41,7 +41,7 @@ The hindcast gives **Eulerian** fields: currents, temperature and salinity known
 It follows particles ("elements") through those fields, which answers questions such as *where does an oil slick
 go*, *where should we search for a person in the water*, and *where do river plastics end up on the coast*.
 
-OpenDrift 1.14.11 is installed in the `ggosss26` environment (`conda activate ggosss26`).
+OpenDrift 1.14.11 is installed in the `ggosss2026` environment (`conda activate ggosss2026`).
 
 ### How a particle moves
 Each element is advected by the interpolated forcing, plus a random walk for motions the grid does not resolve:

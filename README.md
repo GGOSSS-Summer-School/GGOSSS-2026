@@ -18,13 +18,17 @@ git clone https://github.com/GGOSSS-Summer-School/GGOSSS-2026.git
 cd GGOSSS-2026
 ```
 
-Create the environment:
+Create the environment (recommended — conda, from [conda-forge](https://conda-forge.org)):
 
 ```bash
-conda env create -f environment.yml
+conda env create -f ggosss2026_conda_env.yaml
 conda activate ggosss2026
 jupyter lab
 ```
+
+The environment is large (it includes the CROCO tools and OpenDrift), so creating it
+can take a while. [Miniforge](https://github.com/conda-forge/miniforge) is the
+simplest way to get conda if you do not have it yet.
 
 If you prefer pip:
 
@@ -34,9 +38,10 @@ source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**Please do this before you arrive in Cotonou.** Bandwidth on site is limited and
-time spent installing software on Day 1 is time taken from the training. If the
-installation fails, write to contact@ggosss.org rather than waiting until October.
+`requirements.txt` mirrors the conda environment as far as pip allows. Compilers,
+GDAL, OpenDrift, pyinterp and wxPython can only be installed with conda, so the
+modelling session (`05-modelling`) and the OpenDrift exercises need the conda
+environment.
 
 You will also need a free **Copernicus Marine Service** account —
 register at [marine.copernicus.eu](https://marine.copernicus.eu) and check that
@@ -56,8 +61,8 @@ GGOSSS-2026/
 ├── 06-coastal-monitoring/     Shoreline change, coastal processes, machine learning
 ├── 07-field-campaign/         Lake Nokoué campaign — processing the data collected
 ├── 08-group-projects/         Trainee group work
-├── environment.yml
-└── requirements.txt
+├── ggosss2026_conda_env.yaml  Conda environment (ggosss2026) — recommended
+└── requirements.txt           Pip alternative (core packages only)
 ```
 
 Each session folder contains its own `README.md` describing the session, the
@@ -97,7 +102,8 @@ Before submitting:
   Notebooks with embedded figures bloat the repository and produce unreadable diffs.
 - **Use relative paths** — `data/nokoue_ctd.nc`, never `/Users/yourname/Desktop/...`.
 - **Check it runs from a clean environment**, not just from yours.
-- **Add every dependency** to `environment.yml`.
+- **Add every dependency** to `ggosss2026_conda_env.yaml` (and to
+  `requirements.txt` if it is pip-installable).
 - Write a short `README.md` in your session folder.
 
 Final materials are due **Friday 25 September 2026**.

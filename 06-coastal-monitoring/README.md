@@ -101,7 +101,7 @@ Les slides, handouts, cartes interactives HTML et gros fichiers de référence s
 Les participants doivent créer l'environnement commun GGOSSS 2026 avant l'école, comme demandé dans le README racine du dépôt:
 
 ```bash
-conda env create -f environment.yml
+conda env create -f ggosss2026_conda_env.yaml
 conda activate ggosss2026
 jupyter lab
 ```

@@ -1,13 +1,57 @@
-# GGOSSS 2026 — Python requirements
-# Alternative to environment.yml for users who prefer pip/venv.
+# GGOSSS 2026 — Python requirements (pip)
+# Mirrors ggosss2026_conda_env.yaml as far as pip allows.
 #
 #   python -m venv .venv
 #   source .venv/bin/activate      # Windows: .venv\Scripts\activate
 #   pip install -r requirements.txt
 #
-# Note: cartopy needs system libraries (GEOS, PROJ). If it fails to build,
-# use the conda environment instead — see environment.yml.
+# The conda environment is the recommended route:
+#   conda env create -f ggosss2026_conda_env.yaml
+#
+# pip cannot provide the compilers and system libraries that the CROCO
+# modelling session needs (see the list at the bottom). Use conda for
+# 05-modelling and the OpenDrift exercises.
 
+# --- core -----------------------------------------------------------
+python-dateutil
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+numba
+setuptools<81.0
+
+# --- ocean / gridded data -------------------------------------------
+xarray>=2024.1
+netCDF4>=1.6
+h5py
+h5netcdf
+cftime
+dask>=2024.1
+zarr>=3                   # also the ERA5 ARCO store
+fsspec
+aiohttp>=3.9              # HTTP access to the ERA5 ARCO store
+cf-xarray
+xgcm
+xrft
+intake
+intake-xarray
+pydap
+cfgrib
+eccodes                   # GRIB decoding library used by cfgrib
+gsw>=3.6                  # TEOS-10 seawater toolbox
+
+# --- geospatial -----------------------------------------------------
+pyproj
+shapely
+geopandas
+regionmask
+pyamg
+
+# --- plotting -------------------------------------------------------
+matplotlib>=3.8
+cartopy>=0.22
+cmocean>=3.1
+cmcrameri
 #
 # Not installable with pip: install these from the system package manager
 # (apt / brew) or use the conda YAML instead:
@@ -75,6 +119,28 @@ ipykernel
 ipympl
 ipywidgets
 
+# --- data access ----------------------------------------------------
+copernicusmarine>=1.3     # Copernicus Marine Service
+cdsapi                    # Copernicus Climate Data Store (ERA5)
+
+# --- notebooks ------------------------------------------------------
+jupyter
+jupyterlab>=4.1
+ipykernel
+ipython
+ipympl
+ipywidgets>=8.1
+
+# --- conda only: not installable with pip ---------------------------
+# gcc, compilers, netcdf-fortran   compilers and Fortran NetCDF (CROCO)
+# gdal                             needs the system GDAL library
+# opendrift                        depends on GDAL; install via conda
+# ffmpeg, nodejs                   system programs, not Python packages
+# wxpython                         no Linux wheels; install via conda
+# pyinterp>=2026.2.0               built for conda-forge; use conda
+# configparser                     part of Python 3 already
+
+# --- add session-specific packages below ----------------------------
 # --- particle tracking ---
 opendrift
 
