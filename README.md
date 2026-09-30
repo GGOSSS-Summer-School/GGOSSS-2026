@@ -18,13 +18,17 @@ git clone https://github.com/GGOSSS-Summer-School/GGOSSS-2026.git
 cd GGOSSS-2026
 ```
 
-Create the environment:
+Create the environment (recommended — conda, from [conda-forge](https://conda-forge.org)):
 
 ```bash
-conda env create -f environment.yml
+conda env create -f ggosss2026_conda_env.yaml
 conda activate ggosss2026
 jupyter lab
 ```
+
+The environment is large (it includes the CROCO tools and OpenDrift), so creating it
+can take a while. [Miniforge](https://github.com/conda-forge/miniforge) is the
+simplest way to get conda if you do not have it yet.
 
 If you prefer pip:
 
@@ -32,6 +36,18 @@ If you prefer pip:
 python -m venv .venv
 source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+`requirements.txt` mirrors the conda environment as far as pip allows. Compilers,
+GDAL, OpenDrift, pyinterp and wxPython can only be installed with conda, so the
+modelling session (`05-modelling`) and the OpenDrift exercises need the conda
+environment.
+
+To check that everything is installed:
+
+```bash
+conda activate ggosss2026
+python -c "import xarray, cartopy, copernicusmarine, sklearn, gsw; print('GGOSSS 2026 environment OK')"
 ```
 
 **Please do this before you arrive in Cotonou.** Bandwidth on site is limited and
@@ -56,12 +72,31 @@ GGOSSS-2026/
 ├── 06-coastal-monitoring/     Shoreline change, coastal processes, machine learning
 ├── 07-field-campaign/         Lake Nokoué campaign — processing the data collected
 ├── 08-group-projects/         Trainee group work
-├── environment.yml
-└── requirements.txt
+├── ggosss2026_conda_env.yaml  Conda environment (ggosss2026) — recommended
+└── requirements.txt           Pip alternative (core packages only)
 ```
 
 Each session folder contains its own `README.md` describing the session, the
 notebooks in the order they are used, and any data the notebooks expect.
+
+---
+
+## Programme
+
+| Day | Session | Folder | Instructors |
+|---|---|---|---|
+| 1 | Python for ocean data analysis | [`01-python-tutorial`](01-python-tutorial) | Hugo Plombat, Fernand Assene, Rodrigue Imbol Koungue, Babette Tchonang |
+| 2 | In-situ data acquisition | [`02-in-situ`](02-in-situ) | Rodrigue Imbol Koungue, Alina Nathanaël Dossa, Wilfried Panassa |
+| 2 | Satellite oceanography | [`03-satellite`](03-satellite) | Babette Tchonang |
+| 2 | Copernicus Marine Service | [`04-cmems`](04-cmems) | Tony Jolibois, Babette Tchonang |
+| 2 | Coastal monitoring and machine learning *(in French)* | [`06-coastal-monitoring`](06-coastal-monitoring) | Frédéric Bonou, Nourdi Njutapvoui |
+| 3 | Lake Nokoué field campaign | [`07-field-campaign`](07-field-campaign) | Victor Okpeitcha |
+| — | Numerical modelling with CROCO and OpenDrift | [`05-modelling`](05-modelling) | |
+| 4–7 | Group projects | [`08-group-projects`](08-group-projects) | All instructors |
+
+Some sessions need extra set-up beyond the shared environment — for example,
+the optional CoastSat module in `06-coastal-monitoring` runs in its own `coastsat`
+environment. Check the session README before the school.
 
 ---
 
@@ -97,7 +132,8 @@ Before submitting:
   Notebooks with embedded figures bloat the repository and produce unreadable diffs.
 - **Use relative paths** — `data/nokoue_ctd.nc`, never `/Users/yourname/Desktop/...`.
 - **Check it runs from a clean environment**, not just from yours.
-- **Add every dependency** to `environment.yml`.
+- **Add every dependency** to `ggosss2026_conda_env.yaml` (and to
+  `requirements.txt` if it is pip-installable).
 - Write a short `README.md` in your session folder.
 
 Final materials are due **Friday 25 September 2026**.
