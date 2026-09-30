@@ -43,17 +43,6 @@ GDAL, OpenDrift, pyinterp and wxPython can only be installed with conda, so the
 modelling session (`05-modelling`) and the OpenDrift exercises need the conda
 environment.
 
-To check that everything is installed:
-
-```bash
-conda activate ggosss2026
-python -c "import xarray, cartopy, copernicusmarine, sklearn, gsw; print('GGOSSS 2026 environment OK')"
-```
-
-**Please do this before you arrive in Cotonou.** Bandwidth on site is limited and
-time spent installing software on Day 1 is time taken from the training. If the
-installation fails, write to contact@ggosss.org rather than waiting until October.
-
 You will also need a free **Copernicus Marine Service** account —
 register at [marine.copernicus.eu](https://marine.copernicus.eu) and check that
 your login works before you travel.
