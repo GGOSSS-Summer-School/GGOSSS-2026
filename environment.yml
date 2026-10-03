@@ -1,0 +1,56 @@
+name: ggosss2026
+channels:
+  - conda-forge
+  - nodefaults          # stop conda from mixing in Anaconda "defaults" packages
+dependencies:
+  - python=3.11         # from prepro
+  - aiohttp>=3.9        # HTTP access to the ERA5 ARCO store (old 0.x aiohttp breaks it)
+  - cartopy             # from prepro, xcroco
+  - cdsapi              # from prepro
+  - cf-xarray           # from xcroco
+  - cfgrib
+  - cftime              # from prepro
+  - cmcrameri           # Crameri perceptually uniform colormaps
+  - cmocean             # colormaps (OpenDrift exercises)
+  - compilers           # from prepro (provides the right C/C++/Fortran compilers per OS)
+  - copernicusmarine    # from prepro (CMEMS downloads)
+  - dask                # from prepro, xcroco
+  - ffmpeg              # from croco_pyvisu
+  - fsspec
+  - gdal                # from prepro
+  - geopandas           # from prepro, xcroco
+  - gsw                 # TEOS-10 seawater equations
+  - h5netcdf            # from prepro
+  - h5py                # from prepro
+  - intake              # from xcroco
+  - intake-xarray       # from xcroco
+  - ipykernel           # from prepro
+  - ipympl              # from prepro
+  - ipython             # from prepro
+  - ipywidgets          # from prepro, xcroco
+  - jupyter             # from prepro
+  - jupyterlab          # from prepro, xcroco
+  - matplotlib          # from prepro, croco_pyvisu
+  - netcdf-fortran      # from prepro
+  - netcdf4             # from prepro, xcroco, croco_pyvisu
+  - nodejs              # from xcroco
+  - numba               # from xcroco
+  - numpy               # from prepro
+  - opendrift           # moved from pip: available on conda-forge
+  - pandas              # from prepro
+  - pip                 # from prepro
+  - pyamg               # from xcroco
+  - pydap               # moved from pip: from prepro
+  - pyinterp>=2026.2.0  # from prepro
+  - pyproj              # from prepro
+  - python-dateutil     # from prepro
+  - regionmask          # moved from pip
+  - scikit-learn
+  - scipy               # from prepro, croco_pyvisu
+  - setuptools<81.0     # from prepro
+  - shapely             # from prepro
+  - wxpython            # from croco_pyvisu
+  - xarray              # from prepro, xcroco, croco_pyvisu
+  - xgcm                # from xcroco
+  - xrft                # from xcroco
+  - zarr>=3             # from xcroco; also the ERA5 ARCO store (era5_arco.py)
