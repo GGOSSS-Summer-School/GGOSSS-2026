@@ -56,3 +56,4 @@ dependencies:
    - regionmask
    - pydap # from prepro
    - opendrift
+   - gsw
