@@ -63,8 +63,8 @@ if [ "${USE_RIVERS}" = 1 ]; then
 fi
 
 ERA5_CROCO_DIR="${ERA5_DIR}/for_croco"
-NRST=$(( 86400 / DT )); NWRT=$(( 21600 / DT )); NAVG=$(( 21600 / DT ))
-[ "${USE_TIDES}" = 1 ] && { NWRT=$(( 3600 / DT )); NAVG=$(( 86400 / DT )); }
+NRST=$(( 86400 / DT )); NWRT=$(( 86400 / DT )); NAVG=$(( 86400 / DT ))
+[ "${USE_TIDES}" = 1 ] && { NWRT=$(( 86400 / DT )); NAVG=$(( 86400 / DT )); }
 add_days () { date -u -d "$1 + $2 days" +%Y-%m-%d; }
 
 # ---- patch_croco_in <file> <sdate> <edate> <days> ------------------------------
