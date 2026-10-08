@@ -12,7 +12,7 @@
 #   [1] spin-up ini (GLORYS at T-SPINUP) + bry (T-SPINUP-1 .. T+1)
 #   [2] spin-up run SPINUP_DAYS -> croco_rst.nc
 #   [3] hindcast bry (T-1 .. T+HCAST_DAYS+1); IC = the spin-up restart (NRREC 1)
-#   [4] hindcast run HCAST_DAYS -> croco_his.nc, croco_avg.nc
+#   [4] hindcast run HCAST_DAYS (the last cycle is cut at HC_END) -> croco_his.nc, croco_avg.nc
 # Every cycle restarts from GLORYS through its own spin-up (anchored to the
 # reanalysis, no drift). Missing GLORYS/ERA5 months are downloaded on the fly.
 # The online (ERA5) block spans months/years automatically (e.g. 2018 05 24 2018 06).
@@ -102,18 +102,43 @@ stage () {
     return 0
 }
 
+# ---- ensure_parent_data <spin start> <cycle end>: a nested child ------------------
+# The converted parent records (daily means, stamped at 12:00) must bracket every time step
+# of the child cycle: one record at or before the spin-up start, one AFTER the cycle end.
+# Checked on the dates themselves, not on whole months (a child ending on 31 May needs the
+# parent's 31 May 12:00 record, not a June file).
+ensure_parent_data () {
+    cd "${GTOOLS_DIR}"
+    python - "${GLORYS_DIR}" "$1" "$2" <<'PYEOF' || exit 1
+import sys, glob, numpy as np, pandas as pd, xarray as xr
+d, t0, t1 = sys.argv[1], pd.Timestamp(sys.argv[2]), pd.Timestamp(sys.argv[3])
+files = sorted(glob.glob(d + "/20[0-9][0-9]_[0-9][0-9].nc"))
+if not files:
+    sys.exit(f"!! no converted parent data in {d} -- run hindcast/steps/03_download_data.sh for this child")
+t = np.concatenate([xr.open_dataset(f).time.values for f in files])
+first, last = pd.Timestamp(t.min()), pd.Timestamp(t.max())
+if first > t0:
+    sys.exit(f"!! the parent data start at {first}, after this cycle's spin-up start {t0}: start the child later")
+if last <= t1:
+    sys.exit(f"!! the parent data end at {last} (last daily mean), not after this cycle's end {t1}.\n"
+             f"   The child must end at least one day before its parent: set HC_END <= {(last.normalize()):%Y-%m-%d} "
+             f"in the child's domain.cfg (or run the parent one day longer)")
+print(f"  parent data {first:%Y-%m-%d %H:%M} .. {last:%Y-%m-%d %H:%M} bracket {t0:%Y-%m-%d} .. {t1:%Y-%m-%d %H:%M}")
+PYEOF
+    local d="$(date -u -d "$1" +%Y-%m-01)" last="$(date -u -d "$2" +%Y-%m-01)"
+    while [ "$(date -u -d "$d" +%s)" -le "$(date -u -d "$last" +%s)" ]; do
+        local ym=$(date -u -d "$d" +%Y-%m); local y=${ym%-*} m=${ym#*-}
+        [ -s "${ERA5_CROCO_DIR}/T2M_Y${y}M${m}.nc" ] || die "nested in ${PARENT}: its ERA5 has no ${ym} (${ERA5_CROCO_DIR})"
+        d=$(add_days "$d" 32); d=$(date -u -d "$d" +%Y-%m-01)
+    done
+}
+
 # ---- ensure_data <date0> <date1>: GLORYS + ERA5 for every month spanned ---------
 ensure_data () {
     local d="$(date -u -d "$1" +%Y-%m-01)" last="$(date -u -d "$2" +%Y-%m-01)"
     cd "${GTOOLS_DIR}"
     while [ "$(date -u -d "$d" +%s)" -le "$(date -u -d "$last" +%s)" ]; do
         local ym=$(date -u -d "$d" +%Y-%m); local y=${ym%-*} m=${ym#*-}
-        if [ ! -s "${GLORYS_DIR}/${y}_${m}.nc" ] && [ -n "${PARENT}" ]; then
-            die "nested in ${PARENT}: no parent data for ${ym} in ${GLORYS_DIR} -- run hindcast/steps/03_download_data.sh ${CONFIG_NAME} (after the ${PARENT} hindcast)"
-        fi
-        if [ ! -s "${ERA5_CROCO_DIR}/T2M_Y${y}M${m}.nc" ] && [ -n "${PARENT}" ]; then
-            die "nested in ${PARENT}: its ERA5 has no ${ym} (${ERA5_CROCO_DIR})"
-        fi
         if [ ! -s "${GLORYS_DIR}/${y}_${m}.nc" ]; then
             say "downloading GLORYS ${ym} ..."
             python ggosss26.py download_ocean_hindcast --domain="${EXTENTS}" --month_start "${ym}" \
@@ -136,6 +161,10 @@ for (( c=1; c<=NCYC; c++ )); do
     TAG=$(date -u -d "$T" +%Y%m%d)
     SPIN_START=$(add_days "$T" -${SPINUP_DAYS}); SPIN_END="$T"
     HC_S="$T"; HC_E=$(add_days "$T" ${HCAST_DAYS})
+    # the last cycle stops at HC_END (shorter) instead of running past the period
+    if [ "$(date -u -d "${HC_E}" +%s)" -gt "$(date -u -d "${HC_END}" +%s)" ]; then HC_E="${HC_END}"; fi
+    CYC_DAYS=$(( ( $(date -u -d "${HC_E}" +%s) - $(date -u -d "${HC_S}" +%s) ) / 86400 ))
+    [ "${CYC_DAYS}" -ge 1 ] || { echo "  nothing left before HC_END ${HC_END} -- stop"; break; }
     if [ "${BUILD}" = plain ]; then CYCLE_ROOT="${OUTPUT_ROOT}/${TAG}"; else CYCLE_ROOT="${OUTPUT_ROOT}/${TAG}_${BUILD}"; fi
     SPIN_DIR="${CYCLE_ROOT}/spinup"; HC_DIR="${CYCLE_ROOT}/hcast"
     SPIN_GEN="${CYCLE_ROOT}/gen_spinup/CROCO_FILES"; HC_GEN="${CYCLE_ROOT}/gen_hcast/CROCO_FILES"
@@ -150,7 +179,11 @@ for (( c=1; c<=NCYC; c++ )); do
         echo "  already done (${HC_DIR}/croco_hcast.out) -- skipping"; T="${HC_E}"; continue
     fi
     mkdir -p "${SPIN_DIR}/CROCO_FILES" "${HC_DIR}/CROCO_FILES" "${SPIN_GEN}" "${HC_GEN}"
-    ensure_data "$(add_days "${SPIN_START}" -2)" "$(add_days "${HC_E}" 2)"
+    if [ -n "${PARENT}" ]; then
+        ensure_parent_data "${SPIN_START}" "${HC_E}"          # dates, not months (see above)
+    else
+        ensure_data "$(add_days "${SPIN_START}" -2)" "$(add_days "${HC_E}" 2)"
+    fi
 
     if [ "${USE_TIDES}" = 1 ]; then
         say "[0/4] tide file (TPXO) at ${SPIN_START} ..."
@@ -196,9 +229,9 @@ for (( c=1; c<=NCYC; c++ )); do
     stage "${HC_DIR}"
     cp "${SPIN_RST}" "${HC_DIR}/CROCO_FILES/croco_ini.nc"
     cp -L "${HC_BRY}" "${HC_DIR}/CROCO_FILES/croco_bry.nc"
-    patch_croco_in "${HC_DIR}/croco.in" "${HC_S}" "${HC_E}" "${HCAST_DAYS}"
+    patch_croco_in "${HC_DIR}/croco.in" "${HC_S}" "${HC_E}" "${CYC_DAYS}"
 
-    say "[4/4] hindcast run (${HCAST_DAYS} d) ..."
+    say "[4/4] hindcast run (${CYC_DAYS} d) ..."
     ( cd "${HC_DIR}" && ./croco croco.in > croco_hcast.out 2>&1 ) || true
     grep -q "MAIN: DONE" "${HC_DIR}/croco_hcast.out" || { tail -20 "${HC_DIR}/croco_hcast.out"; die "hindcast did not reach MAIN: DONE -- ${HC_DIR}/croco_hcast.out"; }
     echo "  cycle ${TAG} done -> ${HC_DIR}/CROCO_FILES/croco_his.nc"

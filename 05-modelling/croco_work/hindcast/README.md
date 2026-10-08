@@ -317,5 +317,6 @@ child's last point on every side, open or closed.
 | `no <PARENT> run … covers …` / `parent run not finished` | run (or finish) the parent's hindcast over the child's period first |
 | `the child box must lie inside the parent` | shrink the child box (or enlarge the parent) |
 | child: `ERROR in get_bry … 'bry_time'` at the end | the child ends too late: at most the parent's end − 1 day |
+| child: `no parent data for YYYY-MM` (older driver) / `the parent data end at … not after this cycle's end` | set the child's `HC_END` ≤ the parent's `HC_END` − 1 day (the message names it). The current driver checks dates, not months, and cuts the last cycle at `HC_END` |
 | child step 04: `ERROR: The data does not cover the entire grid. Change your grid definition` | a child edge is within 0.2° (+ a cell) of the parent's edge. Move it ≥ 0.3° inside (the scripts now refuse such a box and name the value), then `build_config.sh CHILD --only 1`, `--only 2`, `--from 4`. The converted parent files are kept: step 03 need not run again |
 | ERA5 `TimeoutError` / connection reset | temporary network trouble: retried 5 times; re-run to resume (finished variables are cached in `ERA5/raw/`) |
