@@ -274,7 +274,7 @@ f"latmax = {lat_max}\n"
 "if pressure_extract:\n"
 "    variables.append('msl'); conv_cff.append(1.); units.append('Pa')\n"
             )
-        # sys.executable = the interpreter of the active (ggosss26) env
+        # sys.executable = the interpreter of the active (ggosss2026) env
         subprocess.run([sys.executable, 'ERA5_request.py'], cwd=era5_dir, check=True)
         subprocess.run([sys.executable, 'ERA5_convert.py'], cwd=era5_dir, check=True)
     p.set_defaults(func=_download_atmosphere_hindcast)

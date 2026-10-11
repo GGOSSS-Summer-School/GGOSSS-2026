@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 dependencies = []          # pinned in ggosss2026_conda_env.yaml; install with: pip install --no-deps -e .
 
 [project.scripts]
-ggosss26 = "gtools.ggosss26:main"
+ggosss2026 = "gtools.ggosss2026:main"
 
 [tool.setuptools.packages.find]
 include = ["gtools*"]

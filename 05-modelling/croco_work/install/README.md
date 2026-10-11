@@ -11,7 +11,7 @@ choice for a laptop.
 > ```bash
 > source ~/croco_work/env.sh
 > source ~/croco_work/hindcast/track.sh
-> conda activate ggosss26
+> conda activate ggosss2026
 > ```
 
 ## 0. System packages (Ubuntu / WSL2)
@@ -43,7 +43,7 @@ bash install/04_get_croco.sh            # download CROCO v2.1.3 + croco_pytools 
 ```
 
 - **`04`** also compiles the croco_pytools Fortran helpers (`toolsf*.so`, needed
-  by `make_grid.py`). Run it with `source env.sh` done **and** the `ggosss26`
+  by `make_grid.py`). Run it with `source env.sh` done **and** the `ggosss2026`
   env active (it needs `f2py` from the env and `FFLAGS` from `env.sh`).
 
 ✅ **Check the stack** — after `03`:
@@ -60,9 +60,9 @@ nf-config --flibs         # -> -L.../opt_seq/lib -lnetcdff -lnetcdf ...
 
 ```bash
 cd ${CROCO_ROOT}
-conda env create -f ggosss2026_conda_env.yaml    # creates the 'ggosss26' env (once)
-conda activate ggosss26
-pip install --no-deps -e .             # optional: adds the 'ggosss26' command
+conda env create -f ggosss2026_conda_env.yaml    # creates the 'ggosss2026' env (once)
+conda activate ggosss2026
+pip install --no-deps -e .             # optional: adds the 'ggosss2026' command
 ```
 
 The CLI can always be run as `python ${GTOOLS_DIR}/ggosss26.py <subcommand>`.
@@ -100,14 +100,14 @@ Once extracted, you can delete `DATASETS_CROCOTOOLS.tar.gz`.
 ## Troubleshooting
 
 - **`conda env create` fails with a YAML error** — the first line of
-  `ggosss2026_conda_env.yaml` must be `name: ggosss26` (with a space after the colon).
+  `ggosss2026_conda_env.yaml` must be `name: ggosss2026` (with a space after the colon).
 - **`nf-config` shows a conda or `/usr` path, not `opt_seq`** — `conda deactivate`,
   re-`source env.sh`; it must put `opt_seq/bin` first on `PATH`.
 - **A build step fails** — run them in order (each needs the previous); ensure
   `gfortran`/`gcc` exist (`which gfortran gcc`). Fix, then re-run the failed step.
 - **`02` fails on curl or m4** — `sudo apt install libcurl4-openssl-dev m4`, re-run.
 - **Out of memory / machine freezes during compile** — `export NJOBS=2` and re-run.
-- **`04` didn't compile the Fortran tools** — `source env.sh; conda activate ggosss26`
+- **`04` didn't compile the Fortran tools** — `source env.sh; conda activate ggosss2026`
   and run `make clean && make` in `code/croco_pytools/prepro/Modules/tools_fort_routines/`.
 
 ## Next

@@ -34,14 +34,14 @@ else
     echo "    croco_pytools/ already present — skipping"
 fi
 
-# --- compile the croco_pytools Fortran helpers (needs the ggosss26 conda env active) ---
+# --- compile the croco_pytools Fortran helpers (needs the ggosss2026 conda env active) ---
 echo ">>> compiling croco_pytools Fortran tools ..."
 TOOLS="${C}/croco_pytools/prepro/Modules/tools_fort_routines"
 if [ -d "$TOOLS" ]; then
     ( cd "$TOOLS" && make clean && make )
     ls "${C}"/croco_pytools/prepro/Modules/toolsf*.so >/dev/null 2>&1 \
         && echo ">>> croco_pytools tools compiled" \
-        || echo "!! croco_pytools tools did NOT compile — activate the 'ggosss26' conda env and run 'make' in ${TOOLS}"
+        || echo "!! croco_pytools tools did NOT compile — activate the 'ggosss2026' conda env and run 'make' in ${TOOLS}"
 else
     echo "!! ${TOOLS} not found — check the croco_pytools download"
 fi

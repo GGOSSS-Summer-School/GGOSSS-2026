@@ -1,4 +1,4 @@
-# Installing the `ggosss26` conda environment
+# Installing the `ggosss2026` conda environment
 
 This guide installs **the Python/conda environment** defined in
 `ggosss2026_conda_env.yaml`. That environment is the one used by
@@ -6,7 +6,7 @@ This guide installs **the Python/conda environment** defined in
 - **croco_work**: the CROCO pre-processing tools (`gtools/`, `croco_pytools`), downloads (CMEMS, ERA5), plotting and validation; and
 - the **OpenDrift exercises** (`open_drift/*.ipynb`).
 
-> **Done once per machine.** After the install, every session only needs `conda activate ggosss26`.
+> **Done once per machine.** After the install, every session only needs `conda activate ggosss2026`.
 
 ---
 
@@ -104,17 +104,17 @@ cd ~
 conda env create -f ggosss2026_conda_env.yaml
 ```
 
-- The environment name comes from the first line of the file, `name: ggosss26`. The croco_work scripts activate exactly that name, so don't rename it.
+- The environment name comes from the first line of the file, `name: ggosss2026`. The croco_work scripts activate exactly that name, so don't rename it.
 - Creating the environment takes about **10–30 minutes**: it solves roughly 50 conda packages, then pip installs `regionmask`, `pydap`, `copernicusmarine` and `opendrift` (OpenDrift pulls in `cmocean`, `roaring-landmask`, `adios_db` and more).
 - Don't interrupt it. If it fails part-way.
 
 Activate it:
 
 ```bash
-conda activate ggosss26
+conda activate ggosss2026
 ```
 
-The prompt now shows `(ggosss26)`.
+The prompt now shows `(ggosss2026)`.
 
 
 ---
@@ -124,7 +124,7 @@ The prompt now shows `(ggosss26)`.
 ### 3a. Imports (croco_work + OpenDrift)
 
 ```bash
-conda activate ggosss26
+conda activate ggosss2026
 python - <<'EOF'
 import xarray, netCDF4, numpy, scipy, pandas, dask, h5netcdf, zarr, cftime
 import cartopy, geopandas, shapely, pyproj, pyinterp, regionmask
@@ -136,11 +136,11 @@ from opendrift.models.leeway import Leeway
 from opendrift.models.openoil import OpenOil
 from opendrift.readers import reader_netCDF_CF_generic, reader_ROMS_native
 print("numpy", numpy.__version__, "| xarray", xarray.__version__, "| opendrift", opendrift.__version__)
-print("ggosss26 env OK")
+print("ggosss2026 env OK")
 EOF
 ```
 
-You should see **`ggosss26 env OK`**.
+You should see **`ggosss2026 env OK`**.
 
 ### 3a. OpenDrift smoke test (no data needed)
 
@@ -167,11 +167,11 @@ The first run downloads nothing. The `roaring-landmask` coastline ships with the
 | Symptom | Fix |
 |---|---|
 | `conda: command not found` | Reopen the terminal, or run `source ~/miniconda3/etc/profile.d/conda.sh`. |
-| YAML parse error on `conda env create` | The first line must be exactly `name: ggosss26`, with a space after the colon. Don't edit the file in Word or Notepad with “smart” formatting. |
+| YAML parse error on `conda env create` | The first line must be exactly `name: ggosss2026`, with a space after the colon. Don't edit the file in Word or Notepad with “smart” formatting. |
 | Terms of Service error for `repo.anaconda.com` | See “Use conda-forge only” in step 1, or run `conda tos accept`. |
-| Conda part OK, **pip part failed** (network or proxy) | Finish it by hand: `conda activate ggosss26 && pip install regionmask pydap copernicusmarine opendrift` |
-| Solve takes forever or conflicts | Update conda (`conda update -n base conda`) and make sure `channel_priority` is `strict`. Then start over: `conda env remove -n ggosss26` and create it again. |
-| Environment exists but is broken or old | `conda env remove -n ggosss26`, then `conda env create -f ggosss2026_conda_env.yaml` |
+| Conda part OK, **pip part failed** (network or proxy) | Finish it by hand: `conda activate ggosss2026 && pip install regionmask pydap copernicusmarine opendrift` |
+| Solve takes forever or conflicts | Update conda (`conda update -n base conda`) and make sure `channel_priority` is `strict`. Then start over: `conda env remove -n ggosss2026` and create it again. |
+| Environment exists but is broken or old | `conda env remove -n ggosss2026`, then `conda env create -f ggosss2026_conda_env.yaml` |
 | WSL2: install very slow, or files “missing” | Work in `~` (Linux filesystem), not in `/mnt/c/...`. |
 | WSL2: runs out of memory | Create `C:\Users\<WinUser>\.wslconfig` with `[wsl2]` and `memory=8GB` on the next line. Then run `wsl --shutdown` in PowerShell. |
 | `import wx` fails on a server with no display | Only `croco_pyvisu`'s GUI needs wxPython. The rest of the environment is unaffected. |
@@ -184,19 +184,19 @@ The first run downloads nothing. The `roaring-landmask` coastline ships with the
 ```bash
 # once per machine
 cd ~
-curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+wget -c https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-linux-x86_64.sh              # -> ~/miniconda3
 conda config --add channels conda-forge && conda config --set channel_priority strict
 
 cp /mnt/c/Users/<WinUser>/Downloads/ggosss2026_conda_env.yaml ~/
-conda env create -f ggosss2026_conda_env.yaml      # -> env "ggosss26"
-conda activate ggosss26
-python -m ipykernel install --user --name ggosss26 --display-name "Python (ggosss26)"
+conda env create -f ggosss2026_conda_env.yaml      # -> env "ggosss2026"
+conda activate ggosss2026
+python -m ipykernel install --user --name ggosss2026 --display-name "Python (ggosss2026)"
 
 # every session
-conda activate ggosss26
+conda activate ggosss2026
 ```
-# Installing the `ggosss26` conda environment
+# Installing the `ggosss2026` conda environment
 
 This guide installs **the Python/conda environment** defined in
 `ggosss2026_conda_env.yaml`. That environment is the one used by
@@ -204,7 +204,7 @@ This guide installs **the Python/conda environment** defined in
 - **croco_work**: the CROCO pre-processing tools (`gtools/`, `croco_pytools`), downloads (CMEMS, ERA5), plotting and validation; and
 - the **OpenDrift exercises** (`open_drift/*.ipynb`).
 
-> **Done once per machine.** After the install, every session only needs `conda activate ggosss26`.
+> **Done once per machine.** After the install, every session only needs `conda activate ggosss2026`.
 
 ---
 
@@ -302,17 +302,17 @@ cd ~
 conda env create -f ggosss2026_conda_env.yaml
 ```
 
-- The environment name comes from the first line of the file, `name: ggosss26`. The croco_work scripts activate exactly that name, so don't rename it.
+- The environment name comes from the first line of the file, `name: ggosss2026`. The croco_work scripts activate exactly that name, so don't rename it.
 - Creating the environment takes about **10–30 minutes**: it solves roughly 50 conda packages, then pip installs `regionmask`, `pydap` and `opendrift` (OpenDrift pulls in `roaring-landmask`, `adios_db` and more).
 - Don't interrupt it. If it fails part-way.
 
 Activate it:
 
 ```bash
-conda activate ggosss26
+conda activate ggosss2026
 ```
 
-The prompt now shows `(ggosss26)`.
+The prompt now shows `(ggosss2026)`.
 
 
 ---
@@ -322,7 +322,7 @@ The prompt now shows `(ggosss26)`.
 ### 3a. Imports (croco_work + OpenDrift)
 
 ```bash
-conda activate ggosss26
+conda activate ggosss2026
 python - <<'EOF'
 import xarray, netCDF4, numpy, scipy, pandas, dask, h5netcdf, zarr, cftime
 import cartopy, geopandas, shapely, pyproj, pyinterp, regionmask
@@ -334,11 +334,11 @@ from opendrift.models.leeway import Leeway
 from opendrift.models.openoil import OpenOil
 from opendrift.readers import reader_netCDF_CF_generic, reader_ROMS_native
 print("numpy", numpy.__version__, "| xarray", xarray.__version__, "| opendrift", opendrift.__version__)
-print("ggosss26 env OK")
+print("ggosss2026 env OK")
 EOF
 ```
 
-You should see **`ggosss26 env OK`**.
+You should see **`ggosss2026 env OK`**.
 
 ### 3a. OpenDrift smoke test (no data needed)
 
@@ -365,11 +365,11 @@ The first run downloads nothing. The `roaring-landmask` coastline ships with the
 | Symptom | Fix |
 |---|---|
 | `conda: command not found` | Reopen the terminal, or run `source ~/miniconda3/etc/profile.d/conda.sh`. |
-| YAML parse error on `conda env create` | The first line must be exactly `name: ggosss26`, with a space after the colon. Don't edit the file in Word or Notepad with “smart” formatting. |
+| YAML parse error on `conda env create` | The first line must be exactly `name: ggosss2026`, with a space after the colon. Don't edit the file in Word or Notepad with “smart” formatting. |
 | Terms of Service error for `repo.anaconda.com` | See “Use conda-forge only” in step 1, or run `conda tos accept`. |
-| Conda part OK, **pip part failed** (network or proxy) | Finish it by hand: `conda activate ggosss26 && pip install regionmask pydap opendrift` |
-| Solve takes forever or conflicts | Update conda (`conda update -n base conda`) and make sure `channel_priority` is `strict`. Then start over: `conda env remove -n ggosss26` and create it again. |
-| Environment exists but is broken or old | `conda env remove -n ggosss26`, then `conda env create -f ggosss2026_conda_env.yaml` |
+| Conda part OK, **pip part failed** (network or proxy) | Finish it by hand: `conda activate ggosss2026 && pip install regionmask pydap opendrift` |
+| Solve takes forever or conflicts | Update conda (`conda update -n base conda`) and make sure `channel_priority` is `strict`. Then start over: `conda env remove -n ggosss2026` and create it again. |
+| Environment exists but is broken or old | `conda env remove -n ggosss2026`, then `conda env create -f ggosss2026_conda_env.yaml` |
 | WSL2: install very slow, or files “missing” | Work in `~` (Linux filesystem), not in `/mnt/c/...`. |
 | WSL2: runs out of memory | Create `C:\Users\<WinUser>\.wslconfig` with `[wsl2]` and `memory=8GB` on the next line. Then run `wsl --shutdown` in PowerShell. |
 | `import wx` fails on a server with no display | Only `croco_pyvisu`'s GUI needs wxPython. The rest of the environment is unaffected. |
@@ -387,10 +387,10 @@ bash Miniconda3-latest-linux-x86_64.sh              # -> ~/miniconda3
 conda config --add channels conda-forge && conda config --set channel_priority strict
 
 cp /mnt/c/Users/<WinUser>/Downloads/ggosss2026_conda_env.yaml ~/
-conda env create -f ggosss2026_conda_env.yaml      # -> env "ggosss26"
-conda activate ggosss26
-python -m ipykernel install --user --name ggosss26 --display-name "Python (ggosss26)"
+conda env create -f ggosss2026_conda_env.yaml      # -> env "ggosss2026"
+conda activate ggosss2026
+python -m ipykernel install --user --name ggosss2026 --display-name "Python (ggosss2026)"
 
 # every session
-conda activate ggosss26
+conda activate ggosss2026
 ```

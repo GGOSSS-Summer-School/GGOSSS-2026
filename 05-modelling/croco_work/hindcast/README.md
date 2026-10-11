@@ -33,7 +33,7 @@ nohup ~/croco_work/hindcast/run_hindcast_cycle.sh GoG_12 > ~/GoG_12_hindcast.log
 python3 ~/croco_work/notebooks/verify_config.py GoG_12
 ```
 
-You don't need `conda activate` or `conda deactivate`. The scripts activate the `ggosss26` env for
+You don't need `conda activate` or `conda deactivate`. The scripts activate the `ggosss2026` env for
 the Python tools and remove conda from the environment for the compile (conda's NetCDF would break the link).
 
 ---

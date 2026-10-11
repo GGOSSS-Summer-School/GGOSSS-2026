@@ -44,7 +44,7 @@ source "${HC_HOME}/track.sh" >/dev/null
 export HC_LIB HC_HOME
 
 # the Python tools need the conda env (xarray, netCDF4, copernicusmarine, cdsapi)
-CONDA_ENV_NAME="${CONDA_ENV_NAME:-ggosss26}"
+CONDA_ENV_NAME="${CONDA_ENV_NAME:-ggosss2026}"
 if [ "${CONDA_DEFAULT_ENV:-}" != "${CONDA_ENV_NAME}" ] && [ -z "${NO_CONDA:-}" ]; then
     for _c in "${CONDA_EXE%/bin/conda}" "${HOME}/miniconda3" "${HOME}/anaconda3" "${HOME}/mambaforge"; do
         if [ -n "${_c}" ] && [ -f "${_c}/etc/profile.d/conda.sh" ]; then
